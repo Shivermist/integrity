@@ -117,4 +117,15 @@ def get_hacker_projects(hacker_link):
         list: A list of links to projects the hacker has worked on.
     """
 
-    # TODO: Implement this function
+    # checking first page
+    page = requests.get(hacker_link)
+
+    soup = BeautifulSoup(page.content, "html.parser")
+    projects = soup.find_all(
+        "a", class_=["block-wrapper-link", "fade", "link-to-software"]
+    )
+    projectLinks = []
+    for link in projects:
+        projectLinks.append(link["href"])
+
+    return projectLinks
