@@ -8,10 +8,42 @@ import requests
 baseURL = "https://deltahacks-x.devpost.com/"
 projectGal = baseURL + "project-gallery"
 
-# page = requests.get(projectGal)
+
+def get_project_gallery(base_url):
+    """Fetches links to all projects from the project gallery.
+
+    Args:
+        base_url: The base URL of the website.
+
+    Returns:
+        A list of strings containing URLs to all projects on the website.
+    """
+
+    project_links = []
+    desired_start_page = "project-gallery"
+    page = requests.get(base_url + desired_start_page)
+    current_page = page
+
+    while current_page is not None:
+        soup = BeautifulSoup(page.content, "html.parser")
+
+        # Extract project links from current page
+        projects = soup.find_all(
+            "a", class_=["block-wrapper", "link.fade", "link-to-software"]
+        )
+        for project in projects:
+            project_links.append(project["href"])
+
+        # Find the link to the next page (if it exists)
+        current_page = soup.find("a", rel=["next"])
+
+        # Fetch the next page
+        if current_page:
+            page = requests.get(base_url + current_page["href"])
+
+    return project_links
 
 
-# print(page.text)
 def get_project_details(link):
     """
     This function scrapes project details from a given website.
@@ -72,3 +104,17 @@ def get_project_details(link):
     project_details["team_members"] = members
 
     return project_details
+
+
+def get_hacker_projects(hacker_link):
+    """
+    Scrapes and returns a list of projects a hacker has worked on.
+
+    Args:
+        hacker_link (str): The URL of the hacker's profile page.
+
+    Returns:
+        list: A list of links to projects the hacker has worked on.
+    """
+
+    # TODO: Implement this function
