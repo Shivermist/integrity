@@ -1,9 +1,11 @@
 # scraper.py
 # basic functions to scrabe devpost data
+from datetime import datetime
 from bs4 import BeautifulSoup
 import requests
 
 baseURL = "https://deltahacks-x.devpost.com/"
+# baseURL = "https://sase-lsu-geaux-hack-2023.devpost.com/"
 
 # checking first page
 desiredStartPage = "project-gallery"
@@ -53,9 +55,16 @@ for link in projectLinks:
     # ul tags is class=cp-tag
     if fullInformation is not None:
         innerDivs = fullInformation.find_all("div")
+        innerLength = len(innerDivs)
 
-        for div in innerDivs[1:]:
+        # inner html components
+        for div in innerDivs[innerLength - 2]:
             print(div.text)
+
+        # built with section
+        for div in innerDivs[innerLength - 1]:
+            print(div.get_text(" "))
+        # print(div.text)
 
     # get github url (if it exists)
     softwareURLS = fullInformation.find(
@@ -66,7 +75,7 @@ for link in projectLinks:
         for url in softwareURLS.find_all("a"):
             if "https://github.com" in url["href"]:
                 github = url["href"]
-        print(github)
+                print(github)
 
     # get all team members
     teamMembers = soup.find_all("li", class_="software-team-member")
@@ -83,9 +92,39 @@ for link in projectLinks:
 print(allTeams)
 # go through all of their projects and do checks
 
+# access github commits
+githubURL = "https://github.com/richardl2003/LaaS"
+
+
+def getGithubCommits(githubURL):
+    # note: this assumes their commits are on main!
+    githubURL += "/commits/main/"
+    page = requests.get(githubURL)
+    soup = BeautifulSoup(page.content, "html.parser")
+    # want h3 with data-testid="commit-group-title"
+    commits = soup.find_all("h3", attrs={"data-testid": "commit-group-title"})
+    for commit in commits:
+        commitText = commit.text
+        # save commit dates
+        # get date from text
+        date = commitText.split(" on ")[1]
+        print(date)
+        # as of rn only selecting date
+        datetime_object = datetime.strptime(date, "%b %d, %Y")
+        print(datetime_object)
+
+        # potential flags
+        # commit date before hackathon start date
+        # flag if 1 commit only
+        # flag if only one user commiting (if team 2>)
+
+
+getGithubCommits(githubURL)
+
 
 # # teams
 # hackerURL = "https://devpost.com/kennyzhao-code"
+
 
 def getProjectsFromHacker(hackerURL):
     # checking first page
@@ -127,8 +166,8 @@ def getProjectsFromHacker(hackerURL):
         # if fullInformation is not None:
         #     innerDivs = fullInformation.find_all("div")
 
-            # for div in innerDivs[1:]:
-            #     print(div.text)
+        # for div in innerDivs[1:]:
+        #     print(div.text)
 
         # get github url (if it exists)
         softwareURLS = fullInformation.find(
@@ -141,8 +180,8 @@ def getProjectsFromHacker(hackerURL):
                     github = url["href"]
                     projectRepos.append(github)
 
-        
     print(projectRepos)
+
 
 for team in allTeams:
     print(team)
