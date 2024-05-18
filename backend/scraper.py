@@ -1,12 +1,28 @@
 # scraper.py
 # basic functions to scrabe devpost data
 
-
 from bs4 import BeautifulSoup
 import requests
 
-baseURL = "https://deltahacks-x.devpost.com/"
-projectGal = baseURL + "project-gallery"
+import neurelo
+
+# from neurelo.configuration import Configuration
+
+# from neurelo.api_client import ApiClient
+import os
+
+NEURELO_API_HOST = os.environ.get("NEURELO_API_HOST")
+NEURELO_API_KEY = os.environ.get("NEURELO_API_KEY")
+
+# configuration = Configuration(
+#     host=NEURELO_API_HOST, api_key={"ApiKey": NEURELO_API_KEY}
+# )
+
+# api_client = ApiClient(configuration=configuration)
+
+# from neurelo.api.project_api import ProjectApi
+
+# project_api_client = ProjectApi(api_client)
 
 
 def get_project_gallery(base_url):
@@ -59,6 +75,12 @@ def get_project_details(link):
             github_url (str): URL to the project's Github repository (if found)
             team_members (list): List of URLs to team members' profiles (if found)
     """
+
+    # if link in db
+    # res = project_api_client.find_project(filter={"slug": link})
+    # print(res)
+
+    # return from db
 
     page = requests.get(link)
     soup = BeautifulSoup(page.content, "html.parser")
