@@ -53,6 +53,7 @@ for link in projectLinks[0:3]:
     # ul tags is class=cp-tag
     if fullInformation is not None:
         innerDivs = fullInformation.find_all("div")
+
         for div in innerDivs[1:]:
             print(div.text)
 
