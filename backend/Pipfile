@@ -6,12 +6,13 @@ name = "pypi"
 [packages]
 beautifulsoup4 = "*"
 requests = "*"
-fastapi = "*"
-sentence-transformers = "*"
 dspy = "*"
 google-generativeai = "*"
-taipy = "*"
-streamlist = "*"
+streamlit = "*"
+python-dotenv = "*"
+pip = "*"
+install = "*"
+send2trash = "*"
 
 [dev-packages]
 ipykernel = "*"

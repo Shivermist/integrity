@@ -1,13 +1,16 @@
 # %%
+from dotenv import load_dotenv
 import dspy
 import google.generativeai as genai
 
 
-# Set up the LM
-# llama3 = dspy.OllamaLocal(model="llama3:instruct")
-gemini = dspy.Google(
-    "models/gemini-1.5-flash-latest", api_key="AIzaSyARlu6PRzxIIDcr6eR5UycF26g_P4noIak"
-)
+load_dotenv()  # take environment variables from .env.
+
+import os
+
+key = os.getenv("GEMINI_API_KEY")
+
+gemini = dspy.Google("models/gemini-1.5-flash-latest", api_key=key)
 dspy.settings.configure(lm=gemini)
 
 

@@ -3,6 +3,8 @@
 
 from bs4 import BeautifulSoup
 import requests
+from send2trash import send2trash
+import tempfile
 
 
 def get_project_gallery(base_url):
@@ -25,7 +27,11 @@ def get_project_gallery(base_url):
         soup = BeautifulSoup(page.content, "html.parser")
         if header_img is None:
             header_img = soup.select_one(".header-image img")
-            header_img = header_img["src"]
+            if header_img:
+                header_img = header_img["src"]
+
+            else:
+                header_img = "https://d112y698adiu2z.cloudfront.net/photos/production/challenge_photos/002/341/831/datas/full_width.png"
 
         # Extract project links from current page
         projects = soup.find_all(
@@ -135,3 +141,47 @@ def get_hacker_projects(hacker_link):
         projectLinks.append(link["href"])
 
     return projectLinks
+
+
+import git
+
+
+def get_github_details(github_url):
+    """
+    Checks if a Github repository is empty.
+
+    Args:
+        github_url (str): The URL of the Github repository.
+
+    Returns:
+        num_commits (int): The number of commits in the repository.
+        num_contributors (int): The number of unique contributors to the repository.
+        first_commit (Datetime): The date/time of the first commit to the repository.
+        last_commit (Datetime): The date/time of the last commit to the repository.
+    """
+
+    try:
+        name = github_url.split("/")[-1]
+
+        repo_path = tempfile.tempdir + "/" + name
+        send2trash(repo_path)  # delete if already exists
+
+        repo = git.Repo.clone_from(github_url, repo_path)
+
+        commits = list(repo.iter_commits())
+        num_commits = len(commits)
+
+        contributors = set()
+        for commit in commits:
+            contributors.add(commit.author.env_committer_email)
+
+        num_contributors = len(contributors)
+
+        first_commit = commits[-1].committed_datetime
+
+        last_commit = commits[0].committed_datetime
+
+        return num_commits, num_contributors, first_commit, last_commit
+
+    except:
+        raise Exception("Error cloning repository")
