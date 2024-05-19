@@ -1,0 +1,17 @@
+.button_thing {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+.button_thing button {
+  margin: 0;
+}
+
+.button_thing:first-child {
+  flex: 2;
+}
+
+.button_thing:last-child {
+  flex: 1;
+}
