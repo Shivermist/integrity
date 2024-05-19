@@ -164,7 +164,10 @@ def get_github_details(github_url):
         name = github_url.split("/")[-1]
 
         repo_path = tempfile.tempdir + "/" + name
-        send2trash(repo_path)  # delete if already exists
+        try:
+            send2trash(repo_path)  # delete if already exists
+        except:
+            pass
 
         repo = git.Repo.clone_from(github_url, repo_path)
 
