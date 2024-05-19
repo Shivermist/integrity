@@ -31,7 +31,7 @@ def get_project_gallery(base_url):
                 header_img = header_img["src"]
 
             else:
-                header_img = "https://d112y698adiu2z.cloudfront.net/photos/production/challenge_photos/002/341/831/datas/full_width.png"
+                header_img = "https://i.imgur.com/9iJF8LR.png"
 
         # Extract project links from current page
         projects = soup.find_all(
