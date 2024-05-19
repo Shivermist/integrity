@@ -1,0 +1,12 @@
+# Python Gitignore
+
+__pycache__/
+*.pyc
+
+*.log
+
+# MacOS Files
+.DS_Store
+
+# Env
+.env
