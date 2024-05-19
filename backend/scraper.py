@@ -4,26 +4,6 @@
 from bs4 import BeautifulSoup
 import requests
 
-import neurelo
-
-# from neurelo.configuration import Configuration
-
-# from neurelo.api_client import ApiClient
-import os
-
-NEURELO_API_HOST = os.environ.get("NEURELO_API_HOST")
-NEURELO_API_KEY = os.environ.get("NEURELO_API_KEY")
-
-# configuration = Configuration(
-#     host=NEURELO_API_HOST, api_key={"ApiKey": NEURELO_API_KEY}
-# )
-
-# api_client = ApiClient(configuration=configuration)
-
-# from neurelo.api.project_api import ProjectApi
-
-# project_api_client = ProjectApi(api_client)
-
 
 def get_project_gallery(base_url):
     """Fetches links to all projects from the project gallery.
