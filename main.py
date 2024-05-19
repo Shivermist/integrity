@@ -56,7 +56,9 @@ elif url:
     st.image(header)
     st.write("## Projects")
 
-    for i, link in enumerate(project_links[:5]):
+    linksChosen = project_links[:3] + project_links[5:6]
+    # for i, link in enumerate(project_links[:5]):
+    for i, link in enumerate(linksChosen):
         with st.spinner(f"Fetching project {link}..."):
             project_details = scraper.get_project_details(link)
 
@@ -70,29 +72,38 @@ elif url:
             with st.spinner("Checking GitHub..."):
                 github_url = project_details["github_url"]
 
-                num_commits, num_contributors, first_commit, last_commit = (
-                    scraper.get_github_details(github_url)
-                )
+                try:
+                    num_commits, num_contributors, first_commit, last_commit = (
+                        scraper.get_github_details(github_url)
+                    )
 
-                if num_commits < 4:
+                    if num_commits < 4:
+                        st.error(
+                            f"Less than 4 commits in the repository ({num_commits} commits)",
+                            icon="🚨",
+                        )
+                        show_all_good = False
+
+                    if num_contributors > 4:
+                        st.error(
+                            f"More than 4 contributors in the repository ({num_contributors} contributors)",
+                            icon="🚨",
+                        )
+                        show_all_good = False
+
+                    if (last_commit - first_commit).seconds > 129600:  # 36 hours
+                        st.error(
+                            f"Some commits are more than 36 hours apart. Be sure to check this isn't an existing project.",
+                            icon="🚨",
+                        )
+                        show_all_good = False
+                except:
+
                     st.error(
-                        f"Less than 4 commits in the repository ({num_commits} commits)",
+                        f"The given GitHub link was not able to be downloaded. Check to ensure the project is properly sourced.",
                         icon="🚨",
                     )
-                    show_all_good = False
-
-                if num_contributors > 4:
-                    st.error(
-                        f"More than 4 contributors in the repository ({num_contributors} contributors)",
-                        icon="🚨",
-                    )
-                    show_all_good = False
-
-                if (last_commit - first_commit).seconds > 129600:  # 36 hours
-                    st.error(
-                        f"Some commits are more than 36 hours apart. Be sure to check this isn't an existing project.",
-                        icon="🚨",
-                    )
+                    st.write(f"Given GitHub link: [{github_url}]")
                     show_all_good = False
 
         if True:
