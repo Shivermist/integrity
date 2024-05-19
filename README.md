@@ -14,7 +14,8 @@ Integrity is a simple tool to scan a hackathon project gallery for misconduct. I
 
 1. Clone the repository
 2. Install the dependencies using `pipenv install`
-3. Run the program using `streamlit run main.py`
+3. Setup up a `.env` file based on the `.env.example` file
+4. Run the program using `streamlit run main.py`
 
 ### Contributors
 
