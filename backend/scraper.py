@@ -19,9 +19,13 @@ def get_project_gallery(base_url):
     desired_start_page = "project-gallery"
     page = requests.get(base_url + desired_start_page)
     current_page = page
+    header_img = None
 
     while current_page is not None:
         soup = BeautifulSoup(page.content, "html.parser")
+        if header_img is None:
+            header_img = soup.select_one(".header-image img")
+            header_img = header_img["src"]
 
         # Extract project links from current page
         projects = soup.find_all(
@@ -37,7 +41,7 @@ def get_project_gallery(base_url):
         if current_page:
             page = requests.get(base_url + current_page["href"])
 
-    return project_links
+    return project_links, header_img
 
 
 def get_project_details(link):
