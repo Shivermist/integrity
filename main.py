@@ -95,7 +95,7 @@ elif url:
                     )
                     show_all_good = False
 
-        if False:
+        if True:
             with st.spinner("Comparing to related projects..."):
                 links_to_fetch = get_related(link, project_details["team_members"])
 
