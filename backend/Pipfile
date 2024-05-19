@@ -8,8 +8,12 @@ beautifulsoup4 = "*"
 requests = "*"
 fastapi = "*"
 sentence-transformers = "*"
+dspy = "*"
+google-generativeai = "*"
+taipy = "*"
 
 [dev-packages]
+ipykernel = "*"
 
 [requires]
 python_version = "3.12"
